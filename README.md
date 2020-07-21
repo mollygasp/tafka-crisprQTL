@@ -43,6 +43,28 @@ Available GEO GSE120861.
 - `all_deg_results.at_scale`: All differential expression results from the at-scale screen, along with 'empirical p-values\*' (only calculated for `gRNA_groups` associated with decreases in candidate target gene's expression).
 - `zero_inflated_outlier_genes_to_exclude.atscale.txt`: We observed that genes with a very high mean expression value relative to what you would expect given the number of cells in which they are expressed tended to show up frequently as false positives in permutation tests. These may be outliers with respect to their dispersion given that monocle uses shrinkage to estimate smoothed dispersion values when parameterizing the regression model used for differential gene expression. To avoid this source of false positives, we ignored this small set of outliers in downstream analysis. This set was derived from the data stored in `at_scale_screen.cds.rds`.
 - `zero_inflated_outlier_genes_to_exclude.pilot.txt`: Same as above, but a list of outlier genes we identified from the `pilot_highmoi_screen.cds.rds`.
+- `at_scale_screen.phenoData.txt`: phenotype data dataframe ("pData") for use in Monocle. Includes gRNA-cell associations. Column names provided below:
+sample: sample ID
+cell: the cell's ID, as assigned by cell ranger
+total_umis: total UMIs assigned to the cell
+Size_Factor: as typically used by Monocle to account for variation in total UMI counts across cells
+gRNAgroups: A gRNA-group is defined as all the gRNAs that are targeting the same candidate enhancer or positive control site. If a gRNAgroup was detected in this cell by our analysis, its name is present in this string. The GEO file that contains the gRNAgroup names and their associated sequences for the at_scale screen: GSE120861_grna_groups.at_scale.txt.gz.
+gRNAgroups_dups: If both the gRNAs in a gRNAgroup are present in the same cell, the gRNAgroup's name is present twice in this column (a kind of silly column).
+gRNAsequences: If a gRNAsequence is detected in this cell by our analysis, its name is present in this string.
+read_count: number of reads associated with the cell
+gRNA_umi_count: UMIs associated w the gRNAs
+[the remaining columns were output by a tool we use, but probably are not generally useful:]
+gRNAproportion: proportion of total reads that match gRNAs in this list - note we do not suggest using this column as it appears
+guide_count:  gRNAs detected in the ce;;
+sample_directory: duplicate of the sample ID column
+bc_file: guide barcode file ID
+batch_ID1: overall prep batch
+batch_ID2: reagent lot prep batch
+batch_ID3: within batch chip ID
+batch_ID4: within chip lane ID
+mito: percentage mitochondrial
+
+
 
 \* An empirical P-value was defined for each gene-gRNAgroup pair test that decreased the candidate target gene's expression. The empirical P-value was defined as: [(the number of NTCs with a smaller P-value than that test’s raw P-value) + 1] divided by [the total number of NTCs tests + 1].
 
